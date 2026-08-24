@@ -3,6 +3,7 @@ import { BookOpen, Baby, Handshake, Building2, Users, UserPlus } from 'lucide-re
 import { useLang } from '../context/LanguageContext'
 import { content } from '../i18n/content'
 import { Section } from '../components/UI'
+import PrayerTimesPanel from '../components/PrayerTimesPanel'
 
 export default function Home() {
   const { lang } = useLang()
@@ -83,27 +84,11 @@ export default function Home() {
           <h2>{isBs ? 'Vaktija za Düsseldorf' : 'Gebetszeiten für Düsseldorf'}</h2>
           <p>
             {isBs
-              ? 'Aktuelna dnevna namaska vremena možete pratiti direktno kroz Vaktija.eu.'
-              : 'Aktuelle tägliche Gebetszeiten können Sie direkt über Vaktija.eu verfolgen.'}
+              ? 'Aktuelna dnevna namaska vremena su prikazana direktno na stranici i automatski se ažuriraju.'
+              : 'Aktuelle tägliche Gebetszeiten werden direkt auf der Seite angezeigt und automatisch aktualisiert.'}
           </p>
         </div>
-        <div className="vaktija-wrap">
-          <div className="vaktija-crop">
-            <iframe
-              src="https://vaktija.eu/dusseldorf"
-              title="Vaktija Düsseldorf"
-              loading="lazy"
-              referrerPolicy="strict-origin-when-cross-origin"
-              className="vaktija-frame"
-            />
-          </div>
-          <div className="vaktija-note">
-            {isBs ? 'Trebaš puni prikaz?' : 'Vollansicht benötigt?'}{' '}
-            <a href="https://vaktija.eu/dusseldorf" target="_blank" rel="noreferrer">
-              {isBs ? 'Otvori Vaktiju u novom tabu' : 'Vaktija in neuem Tab öffnen'}
-            </a>
-          </div>
-        </div>
+        <PrayerTimesPanel />
       </Section>
 
       <Section alt>

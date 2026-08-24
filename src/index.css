@@ -99,7 +99,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; color: var
   line-height: 1;
   white-space: nowrap;
 }
-.brand-mark { width: 40px; height: 40px; border-radius: 10px; background: var(--green-800); display: grid; place-items: center; color: var(--gold-light); font-size: 1.2rem; }
+.brand-logo { width: 40px; height: 40px; object-fit: contain; border-radius: 10px; }
 .nav-links { display: flex; align-items: center; gap: 0.35rem; }
 .nav-links a,
 .nav-drop-trigger {
@@ -177,35 +177,61 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; color: var
 .prayer-strip .p-item strong { font-family: var(--font-display); }
 
 /* Vaktija */
-.vaktija-wrap {
-  max-width: 920px;
+.prayer-times-widget {
+  max-width: 960px;
   margin: 0 auto;
-  border-radius: 16px;
-  overflow: hidden;
+  border-radius: 18px;
+  padding: 1.2rem;
   border: 1px solid var(--parchment-dark);
   box-shadow: var(--shadow-sm);
   background: #fff;
 }
-.vaktija-crop {
-  height: 620px;
-  overflow: auto;
-  border-bottom: 1px solid var(--parchment-dark);
+.prayer-times-widget h3 {
+  margin-bottom: 0.9rem;
+  font-size: 1.25rem;
 }
-.vaktija-frame {
-  width: 100%;
-  height: 980px;
-  border: 0;
-  display: block;
-  margin-top: -280px;
+.prayer-times-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
 }
-.vaktija-note {
+.prayer-time-row {
+  background: linear-gradient(90deg, #fbf7eb, #fff);
+  border: 1px solid var(--parchment-dark);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.prayer-time-row span {
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+.prayer-time-row strong {
+  color: var(--green-900);
+  font-family: var(--font-display);
+  font-size: 1.12rem;
+  letter-spacing: 0.02em;
+}
+.prayer-times-meta {
+  margin-top: 0.9rem;
+  border-top: 1px solid var(--parchment-dark);
+  padding-top: 0.8rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
   font-size: 0.9rem;
   color: var(--muted);
-  padding: 0.8rem 1rem;
-  text-align: center;
 }
-.vaktija-note a { color: var(--green-800); font-weight: 600; }
-.vaktija-note a:hover { color: var(--green-700); }
+.prayer-times-meta a,
+.prayer-times-note a { color: var(--green-800); font-weight: 600; }
+.prayer-times-meta a:hover,
+.prayer-times-note a:hover { color: var(--green-700); }
+.prayer-times-note {
+  font-size: 0.92rem;
+  color: var(--muted);
+}
 
 /* Stats */
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
@@ -321,9 +347,8 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; color: var
   .form .row { grid-template-columns: 1fr; }
   .hero-inner { padding: 5rem 0 4.5rem; }
   .hero-quote { margin-top: 2.2rem; }
-  .vaktija-wrap { max-width: 100%; }
-  .vaktija-crop { height: 560px; }
-  .vaktija-frame { height: 940px; margin-top: -240px; }
+  .prayer-times-widget { max-width: 100%; }
+  .prayer-times-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .nav-inner { min-height: 68px; }
   .nav-links { display: none; position: absolute; top: 68px; left: 0; right: 0; background: var(--parchment); flex-direction: column; align-items: stretch; padding: 0.8rem 1rem 1rem; border-bottom: 1px solid var(--parchment-dark); gap: 0.2rem; }
   .nav-links.open { display: flex; }
@@ -340,10 +365,9 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; color: var
   .nav-links { top: 64px; }
   .hero-inner { padding: 4.4rem 0 4rem; }
   .hero p.lead { font-size: 1.06rem; }
-  .vaktija-crop { height: 520px; }
-  .vaktija-frame { height: 900px; margin-top: -200px; }
+  .prayer-times-grid { grid-template-columns: 1fr; }
   .brand { font-size: 1rem; gap: 0.55rem; }
-  .brand-mark { width: 34px; height: 34px; font-size: 1rem; border-radius: 9px; }
+  .brand-logo { width: 34px; height: 34px; border-radius: 9px; }
   .lang-switch button { padding: 0.3rem 0.6rem; font-size: 0.75rem; }
   .burger { padding: 6px; }
   .burger span { width: 22px; }

@@ -11,7 +11,8 @@ export default function Footer() {
         <div className="footer-grid">
           <div>
             <div className="brand" style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.2rem' }}>
-              ☾ IKC Düsseldorf
+              <img src="/logo.png" alt="IKC Düsseldorf logo" className="brand-logo" />
+              IKC Düsseldorf
             </div>
             <p>{t.footer.about}</p>
           </div>

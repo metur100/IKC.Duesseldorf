@@ -19,6 +19,21 @@ npm run build
 npm run preview
 ```
 
+## Vaktija API (bez iframe)
+
+App koristi `Vaktija.eu` kao primarni izvor vremena za namaz preko proxy endpointa:
+
+- Lokalno (`npm run dev`): `GET /api/vaktija/dusseldorf` (Vite middleware)
+- Produkcija (serverless): `api/vaktija/dusseldorf.ts`
+
+Frontend prvo pokušava Vaktija proxy, a ako endpoint nije dostupan automatski pada na AlAdhan fallback.
+
+Opcionalno možete postaviti vlastiti URL:
+
+```bash
+VITE_VAKTIJA_PROXY_URL=https://vas-domen.com/api/vaktija/dusseldorf
+```
+
 ## Struktura
 
 - `src/i18n/` — svi prijevodi (BS/DE) i sav tekstualni sadržaj sajta

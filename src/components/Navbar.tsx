@@ -13,7 +13,7 @@ export default function Navbar() {
     <nav className="nav">
       <div className="container nav-inner">
         <NavLink to="/" className="brand" onClick={close}>
-          <span className="brand-mark">☾</span>
+          <img src="/logo.png" alt="IKC Düsseldorf logo" className="brand-logo" />
           <span>IKC Düsseldorf</span>
         </NavLink>
 
