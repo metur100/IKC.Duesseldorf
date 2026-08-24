@@ -5,13 +5,14 @@ import { content } from '../i18n/content'
 export default function Footer() {
   const { lang } = useLang()
   const t = content[lang]
+  const logoUrl = `${import.meta.env.BASE_URL}logo.png`
   return (
     <footer className="footer">
       <div className="container">
         <div className="footer-grid">
           <div>
             <div className="brand" style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.2rem' }}>
-              <img src="/logo.png" alt="IKC Düsseldorf logo" className="brand-logo" />
+              <img src={logoUrl} alt="IKC Düsseldorf logo" className="brand-logo" />
               IKC Düsseldorf
             </div>
             <p>{t.footer.about}</p>

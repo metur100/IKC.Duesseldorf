@@ -8,12 +8,13 @@ export default function Navbar() {
   const t = content[lang]
   const [open, setOpen] = useState(false)
   const close = () => setOpen(false)
+  const logoUrl = `${import.meta.env.BASE_URL}logo.png`
 
   return (
     <nav className="nav">
       <div className="container nav-inner">
         <NavLink to="/" className="brand" onClick={close}>
-          <img src="/logo.png" alt="IKC Düsseldorf logo" className="brand-logo" />
+          <img src={logoUrl} alt="IKC Düsseldorf logo" className="brand-logo" />
           <span>IKC Düsseldorf</span>
         </NavLink>
 
