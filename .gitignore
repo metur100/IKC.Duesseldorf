@@ -1,4 +1,30 @@
-node_modules
-dist
-.DS_Store
+node_modules/
+dist/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build/tool caches
+.vite/
+.cache/
+coverage/
+
+# Environment/local config
+.env
+.env.*
+!.env.example
 *.local
+
+# TypeScript
+*.tsbuildinfo
+
+# Editor/OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
