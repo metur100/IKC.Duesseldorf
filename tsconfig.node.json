@@ -2,12 +2,22 @@
   "compilerOptions": {
     "composite": true,
     "skipLibCheck": true,
-    "lib": ["ES2020"],
-    "types": ["node"],
+    "lib": [
+      "ES2020"
+    ],
+    "types": [
+      "node"
+    ],
     "module": "ESNext",
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
-    "strict": true
+    "strict": true,
+    "outDir": "./node_modules/.tmp/tsconfig-node",
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo"
   },
-  "include": ["vite.config.ts", "src/seo/pages.ts", "src/i18n/content.ts"]
+  "include": [
+    "vite.config.ts",
+    "src/seo/pages.ts",
+    "src/i18n/content.ts"
+  ]
 }
