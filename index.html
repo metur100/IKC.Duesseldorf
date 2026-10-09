@@ -2,10 +2,79 @@
 <html lang="bs">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="IGBD - Gemeinde IKC Düsseldorf e.V. - Islamski kulturni centar Düsseldorf" />
-    <title>IKC Düsseldorf</title>
+    <meta name="theme-color" content="#063d2e" />
+
+    <!-- Page-specific values are rewritten per route at build time (see vite.config.ts) and while navigating. -->
+    <title>IKC Düsseldorf — Islamski kulturni centar | Bošnjački džemat u Düsseldorfu</title>
+    <meta name="description" content="IGBD – Gemeinde IKC Düsseldorf e.V.: bošnjački džemat i islamski kulturni centar u Düsseldorfu od 1983. Vaktija, džuma-namaz u 14:00, mekteb, predavanja i članstvo." />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="__SITE_URL__" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="IKC Düsseldorf" />
+    <meta property="og:locale" content="bs_BA" />
+    <meta property="og:locale:alternate" content="de_DE" />
+    <meta property="og:url" content="__SITE_URL__" />
+    <meta property="og:title" content="IKC Düsseldorf — Islamski kulturni centar | Bošnjački džemat u Düsseldorfu" />
+    <meta property="og:description" content="IGBD – Gemeinde IKC Düsseldorf e.V.: bošnjački džemat i islamski kulturni centar u Düsseldorfu od 1983." />
+    <meta property="og:image" content="__SITE_URL__og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="IKC Düsseldorf — Islamski kulturni centar" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="IKC Düsseldorf — Islamski kulturni centar | Bošnjački džemat u Düsseldorfu" />
+    <meta name="twitter:description" content="IGBD – Gemeinde IKC Düsseldorf e.V.: bošnjački džemat i islamski kulturni centar u Düsseldorfu od 1983." />
+    <meta name="twitter:image" content="__SITE_URL__og-image.jpg" />
+    <meta name="geo.region" content="DE-NW" />
+    <meta name="geo.placename" content="Düsseldorf" />
+
+    <link rel="icon" type="image/svg+xml" href="%BASE_URL%favicon.svg" />
+    <link rel="icon" type="image/png" sizes="192x192" href="%BASE_URL%icon-192.png" />
+    <link rel="apple-touch-icon" href="%BASE_URL%apple-touch-icon.png" />
+    <link rel="manifest" href="%BASE_URL%site.webmanifest" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "__SITE_URL__#organization",
+            "name": "IKC Düsseldorf",
+            "legalName": "IGBD – Gemeinde IKC Düsseldorf e.V.",
+            "alternateName": ["Islamski kulturni centar Düsseldorf", "Islamisches Kulturzentrum Düsseldorf", "IGBD Gemeinde IKC Düsseldorf"],
+            "url": "__SITE_URL__",
+            "logo": "__SITE_URL__logo.png",
+            "image": "__SITE_URL__og-image.jpg",
+            "email": "duesseldorf@igbd.org",
+            "telephone": "+49 211 9304619",
+            "foundingDate": "1983",
+            "address": { "@type": "PostalAddress", "streetAddress": "Niederstraße 1", "postalCode": "40223", "addressLocality": "Düsseldorf", "addressRegion": "NRW", "addressCountry": "DE" },
+            "location": { "@id": "__SITE_URL__#mosque" },
+            "sameAs": ["https://ikc-d.org/"]
+          },
+          {
+            "@type": "Mosque",
+            "@id": "__SITE_URL__#mosque",
+            "name": "IKC Düsseldorf — Islamski kulturni centar",
+            "url": "__SITE_URL__",
+            "image": "__SITE_URL__og-image.jpg",
+            "telephone": "+49 211 9304619",
+            "address": { "@type": "PostalAddress", "streetAddress": "Niederstraße 1", "postalCode": "40223", "addressLocality": "Düsseldorf", "addressRegion": "NRW", "addressCountry": "DE" },
+            "publicAccess": true
+          },
+          {
+            "@type": "WebSite",
+            "@id": "__SITE_URL__#website",
+            "url": "__SITE_URL__",
+            "name": "IKC Düsseldorf",
+            "inLanguage": ["bs", "de"],
+            "publisher": { "@id": "__SITE_URL__#organization" }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

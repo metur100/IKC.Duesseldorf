@@ -15,6 +15,33 @@ import Boards from './pages/Boards'
 import Membership from './pages/Membership'
 import Faq from './pages/Faq'
 import Contact from './pages/Contact'
+import { useLang } from './context/LanguageContext'
+import { fullTitle, pageFor } from './seo/pages'
+
+function setMeta(selector: string, attr: 'content' | 'href', value: string) {
+  const el = document.head.querySelector(selector)
+  if (el) el.setAttribute(attr, value)
+}
+
+/** Keeps the document title, description, canonical and social tags in sync with the page. */
+function PageMeta() {
+  const { pathname } = useLocation()
+  const { lang } = useLang()
+  useEffect(() => {
+    const page = pageFor(pathname)
+    const title = fullTitle(page, lang)
+    const url = new URL(page.path.replace(/^\//, ''), window.location.origin + import.meta.env.BASE_URL).href
+    document.title = title
+    setMeta('meta[name="description"]', 'content', page.description[lang])
+    setMeta('link[rel="canonical"]', 'href', url)
+    setMeta('meta[property="og:url"]', 'content', url)
+    setMeta('meta[property="og:title"]', 'content', title)
+    setMeta('meta[property="og:description"]', 'content', page.description[lang])
+    setMeta('meta[name="twitter:title"]', 'content', title)
+    setMeta('meta[name="twitter:description"]', 'content', page.description[lang])
+  }, [pathname, lang])
+  return null
+}
 
 function ScrollTop() {
   const { pathname } = useLocation()
@@ -26,6 +53,7 @@ export default function App() {
   return (
     <>
       <ScrollTop />
+      <PageMeta />
       <Navbar />
       <PrayerBanner />
       <main>

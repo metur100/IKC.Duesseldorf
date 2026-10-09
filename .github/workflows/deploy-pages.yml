@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [master, main]
   workflow_dispatch:
 
 permissions:
@@ -46,7 +46,6 @@ jobs:
 
           echo "Building with base path: $BASE_PATH"
           npm run build:pages -- --base="$BASE_PATH"
-          cp dist/index.html dist/404.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
