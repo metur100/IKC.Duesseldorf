@@ -228,6 +228,15 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; color: var
 .prayer-times-note a { color: var(--green-800); font-weight: 600; }
 .prayer-times-meta a:hover,
 .prayer-times-note a:hover { color: var(--green-700); }
+.prayer-times-frame {
+  display: block;
+  width: 100%;
+  height: 760px;
+  border: 0;
+  border-radius: 12px;
+  background: #fff;
+}
+.prayer-times-widget .prayer-times-note { margin-top: 0.7rem; text-align: right; }
 .prayer-times-note {
   font-size: 0.92rem;
   color: var(--muted);
@@ -347,7 +356,8 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; color: var
   .form .row { grid-template-columns: 1fr; }
   .hero-inner { padding: 5rem 0 4.5rem; }
   .hero-quote { margin-top: 2.2rem; }
-  .prayer-times-widget { max-width: 100%; }
+  .prayer-times-widget { max-width: 100%; padding: 0.6rem; }
+  .prayer-times-frame { height: 680px; }
   .prayer-times-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .nav-inner { min-height: 68px; }
   .nav-links { display: none; position: absolute; top: 68px; left: 0; right: 0; background: var(--parchment); flex-direction: column; align-items: stretch; padding: 0.8rem 1rem 1rem; border-bottom: 1px solid var(--parchment-dark); gap: 0.2rem; }
