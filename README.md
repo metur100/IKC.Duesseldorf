@@ -19,20 +19,32 @@ npm run build
 npm run preview
 ```
 
-## Vaktija API (bez iframe)
+## Backend (backend/IKC.Api)
 
-App koristi `Vaktija.eu` kao primarni izvor vremena za namaz preko proxy endpointa:
+ASP.NET Core (.NET 10) API na MonsterASP (https://ikcduesseldorf.runasp.net):
 
-- Lokalno (`npm run dev`): `GET /api/vaktija/dusseldorf` (Vite middleware)
-- Produkcija (serverless): `api/vaktija/dusseldorf.ts`
+- `GET /api/vaktija/dusseldorf?lang=bs|de`: vremena namaza sa **vaktija.eu** (keširano do ponoći; ako vaktija.eu padne, vremena dolaze iz keširanog mjeseca)
+- `GET /api/content`: sav sadržaj stranice (isti oblik kao `src/i18n/content.json`)
+- `POST /api/auth/login`: prijava admina (JWT)
+- `/api/admin/content/{lang}/{key}` (GET/PUT), `/api/admin/images` (upload na ImgBB), `/api/admin/users`: za admin panel
 
-Frontend prvo pokušava Vaktija proxy, a ako endpoint nije dostupan automatski pada na AlAdhan fallback.
+Kad admin sačuva izmjenu, backend pokreće GitHub Actions (`repository_dispatch: content-updated`), workflow
+preuzme sadržaj sa API-ja (`scripts/fetch-content.mjs`) i ponovo objavi statičnu stranicu.
 
-Opcionalno možete postaviti vlastiti URL:
+Lokalno:
 
 ```bash
-VITE_VAKTIJA_PROXY_URL=https://vas-domen.com/api/vaktija/dusseldorf
+cd backend/IKC.Api
+dotnet user-secrets set "Jwt:Key" "<najmanje 32 znaka>"
+dotnet user-secrets set "ImgBb:ApiKey" "<ključ>"
+dotnet user-secrets set "Admin:Password" "<lozinka za prvog admina>"
+dotnet run            # http://localhost:5013, SQLite baza ikc-dev.db
 ```
+
+`npm run dev` prosljeđuje `/api` na `http://localhost:5013`.
+
+Produkcija: tajne su u `backend/IKC.Api/appsettings.Production.json` (nije u gitu). Za automatsku objavu poslije izmjene
+treba u njega dodati `"GitHub": { "Token": "..." }` (fine-grained token za ovaj repo, dozvola *Contents: read and write*).
 
 ## Struktura
 

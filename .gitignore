@@ -28,3 +28,8 @@ coverage/
 Thumbs.db
 .vscode/
 .idea/
+
+# Publish profili i produkcijske tajne (lozinke)
+*.publishSettings
+*.pubxml.user
+appsettings.Production.json

@@ -1,102 +1,33 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useLang } from '../context/LanguageContext'
 
-type ApiResponse = {
-  code: number
-  status: string
-  data: {
-    timings: Record<string, string>
-    date: {
-      readable: string
-      hijri: {
-        date: string
-      }
-    }
-    meta: {
-      timezone: string
-    }
+// Vremena dolaze sa vaktija.eu preko našeg backend-a (backend/IKC.Api, GET /api/vaktija/dusseldorf).
+// Lokalno Vite prosljeđuje /api na backend (vite.config.ts), u produkciji VITE_API_URL pokazuje na MonsterASP.
+const API_URL = (import.meta.env.VITE_API_URL ?? '').replace(/\/$/, '')
+const VAKTIJA_URL = 'https://vaktija.eu/dusseldorf'
+
+type VaktijaResponse = {
+  source: string
+  location: string
+  date: string
+  gregorian: string
+  hijri: string | null
+  times: {
+    fajr: string
+    sunrise: string
+    dhuhr: string
+    asr: string
+    maghrib: string
+    isha: string
   }
-}
-
-type VaktijaProxyResponse = {
-  pageProps?: {
-    dailyPrayersRes?: {
-      fajr?: string
-      sunrise?: string
-      dhuhr?: string
-      asr?: string
-      maghrib?: string
-      isha?: string
-    }
-    todayGregorian?: string
-    todayHijri?: string
-  }
-}
-
-type PrayerTimes = {
-  fajr: string
-  sunrise: string
-  dhuhr: string
-  asr: string
-  maghrib: string
-  isha: string
-  readableDate: string
-  hijriDate: string
-  timezone: string
-}
-
-type DataSource = 'vaktija' | 'aladhan'
-
-function cleanTime(value: string | undefined) {
-  if (!value) return '--:--'
-  const base = value.split(' ')[0]
-  const parts = base.split(':')
-  if (parts.length >= 2) {
-    return `${parts[0]}:${parts[1]}`
-  }
-
-  return base
-}
-
-function mapApiToPrayerTimes(payload: ApiResponse): PrayerTimes {
-  return {
-    fajr: cleanTime(payload.data.timings.Fajr),
-    sunrise: cleanTime(payload.data.timings.Sunrise),
-    dhuhr: cleanTime(payload.data.timings.Dhuhr),
-    asr: cleanTime(payload.data.timings.Asr),
-    maghrib: cleanTime(payload.data.timings.Maghrib),
-    isha: cleanTime(payload.data.timings.Isha),
-    readableDate: payload.data.date.readable,
-    hijriDate: payload.data.date.hijri.date,
-    timezone: payload.data.meta.timezone
-  }
-}
-
-function mapVaktijaToPrayerTimes(payload: VaktijaProxyResponse): PrayerTimes {
-  const prayers = payload.pageProps?.dailyPrayersRes
-  if (!prayers) {
-    throw new Error('Invalid Vaktija payload')
-  }
-
-  return {
-    fajr: cleanTime(prayers.fajr),
-    sunrise: cleanTime(prayers.sunrise),
-    dhuhr: cleanTime(prayers.dhuhr),
-    asr: cleanTime(prayers.asr),
-    maghrib: cleanTime(prayers.maghrib),
-    isha: cleanTime(prayers.isha),
-    readableDate: payload.pageProps?.todayGregorian ?? '--',
-    hijriDate: payload.pageProps?.todayHijri ?? '--',
-    timezone: 'Europe/Berlin'
-  }
+  stale: boolean
 }
 
 export default function PrayerTimesPanel() {
   const { lang } = useLang()
-  const [times, setTimes] = useState<PrayerTimes | null>(null)
-  const [source, setSource] = useState<DataSource | null>(null)
+  const [vaktija, setVaktija] = useState<VaktijaResponse | null>(null)
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState(false)
 
   const labels = useMemo(
     () =>
@@ -104,13 +35,9 @@ export default function PrayerTimesPanel() {
         ? {
             title: 'Današnja vremena namaza',
             source: 'Izvor',
-            sourceVaktija: 'Vaktija.eu',
-            sourceAlAdhan: 'AlAdhan API',
-            fallback:
-              'Ako podaci trenutno nisu dostupni, otvorite Vaktija.eu ili postavite proxy za Vaktija API podatke.',
+            fallback: 'Vaktija trenutno nije dostupna. Pogledajte vremena na',
             date: 'Datum',
             hijri: 'Hidžri',
-            timezone: 'Vremenska zona',
             prayers: {
               fajr: 'Sabah',
               sunrise: 'Izlazak',
@@ -123,13 +50,9 @@ export default function PrayerTimesPanel() {
         : {
             title: 'Heutige Gebetszeiten',
             source: 'Quelle',
-            sourceVaktija: 'Vaktija.eu',
-            sourceAlAdhan: 'AlAdhan API',
-            fallback:
-              'Wenn die Daten gerade nicht verfügbar sind, öffnen Sie Vaktija.eu oder richten Sie einen Proxy für Vaktija-API-Daten ein.',
+            fallback: 'Die Gebetszeiten sind gerade nicht verfügbar. Sie finden sie auf',
             date: 'Datum',
             hijri: 'Hidschri',
-            timezone: 'Zeitzone',
             prayers: {
               fajr: 'Fajr',
               sunrise: 'Sonnenaufgang',
@@ -144,17 +67,14 @@ export default function PrayerTimesPanel() {
 
   const prayerRows = useMemo(
     () =>
-      times
-        ? [
-            { key: 'fajr', label: labels.prayers.fajr, value: times.fajr },
-            { key: 'sunrise', label: labels.prayers.sunrise, value: times.sunrise },
-            { key: 'dhuhr', label: labels.prayers.dhuhr, value: times.dhuhr },
-            { key: 'asr', label: labels.prayers.asr, value: times.asr },
-            { key: 'maghrib', label: labels.prayers.maghrib, value: times.maghrib },
-            { key: 'isha', label: labels.prayers.isha, value: times.isha }
-          ]
+      vaktija
+        ? (Object.keys(labels.prayers) as (keyof VaktijaResponse['times'])[]).map((key) => ({
+            key,
+            label: labels.prayers[key],
+            value: vaktija.times[key]
+          }))
         : [],
-    [labels.prayers, times]
+    [labels.prayers, vaktija]
   )
 
   useEffect(() => {
@@ -162,63 +82,27 @@ export default function PrayerTimesPanel() {
 
     async function load() {
       setLoading(true)
-      setError(null)
+      setError(false)
 
       try {
-        const configuredProxy = import.meta.env.VITE_VAKTIJA_PROXY_URL
-        const proxyCandidates = [configuredProxy, '/api/vaktija/dusseldorf'].filter(
-          (value): value is string => Boolean(value)
-        )
-
-        let loadedFromVaktija = false
-
-        for (const endpoint of proxyCandidates) {
-          try {
-            const response = await fetch(endpoint, { headers: { Accept: 'application/json' } })
-            if (!response.ok) {
-              continue
-            }
-
-            const payload = (await response.json()) as VaktijaProxyResponse
-            const mapped = mapVaktijaToPrayerTimes(payload)
-
-            if (!cancelled) {
-              setTimes(mapped)
-              setSource('vaktija')
-            }
-
-            loadedFromVaktija = true
-            break
-          } catch {
-            // Try next candidate or fallback provider.
-          }
+        const response = await fetch(`${API_URL}/api/vaktija/dusseldorf?lang=${lang}`, {
+          headers: { Accept: 'application/json' }
+        })
+        if (!response.ok) {
+          throw new Error(`Vaktija request failed (${response.status})`)
         }
 
-        if (loadedFromVaktija) {
-          return
-        }
-
-        const fallbackResponse = await fetch(
-          'https://api.aladhan.com/v1/timingsByCity?city=Dusseldorf&country=Germany&state=North%20Rhine-Westphalia&method=3&school=1',
-          { headers: { Accept: 'application/json' } }
-        )
-
-        if (!fallbackResponse.ok) {
-          throw new Error('Request failed')
-        }
-
-        const fallbackPayload = (await fallbackResponse.json()) as ApiResponse
-        if (fallbackPayload.code !== 200 || !fallbackPayload.data?.timings) {
-          throw new Error('Invalid payload')
+        const payload = (await response.json()) as VaktijaResponse
+        if (!payload?.times) {
+          throw new Error('Invalid Vaktija payload')
         }
 
         if (!cancelled) {
-          setTimes(mapApiToPrayerTimes(fallbackPayload))
-          setSource('aladhan')
+          setVaktija(payload)
         }
       } catch {
         if (!cancelled) {
-          setError('unavailable')
+          setError(true)
         }
       } finally {
         if (!cancelled) {
@@ -232,25 +116,25 @@ export default function PrayerTimesPanel() {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [lang])
 
   return (
     <div className="prayer-times-widget" aria-live="polite">
       <h3>{labels.title}</h3>
 
-      {loading && <p className="prayer-times-note">Loading...</p>}
+      {loading && !vaktija && <p className="prayer-times-note">Loading...</p>}
 
       {!loading && error && (
         <p className="prayer-times-note">
           {labels.fallback}{' '}
-          <a href="https://vaktija.eu/dusseldorf" target="_blank" rel="noreferrer">
+          <a href={VAKTIJA_URL} target="_blank" rel="noreferrer">
             Vaktija.eu
           </a>
           .
         </p>
       )}
 
-      {!loading && !error && times && (
+      {!error && vaktija && (
         <>
           <div className="prayer-times-list" role="list">
             {prayerRows.map((item) => (
@@ -262,20 +146,13 @@ export default function PrayerTimesPanel() {
           </div>
 
           <div className="prayer-times-meta">
-            <span>{labels.date}: {times.readableDate}</span>
-            <span>{labels.hijri}: {times.hijriDate}</span>
-            <span>{labels.timezone}: {times.timezone}</span>
+            <span>{labels.date}: {vaktija.gregorian}</span>
+            {vaktija.hijri && <span>{labels.hijri}: {vaktija.hijri}</span>}
             <span>
               {labels.source}:{' '}
-              {source === 'vaktija' ? (
-                <a href="https://vaktija.eu/dusseldorf" target="_blank" rel="noreferrer">
-                  {labels.sourceVaktija}
-                </a>
-              ) : (
-                <a href="https://aladhan.com/prayer-times-api" target="_blank" rel="noreferrer">
-                  {labels.sourceAlAdhan}
-                </a>
-              )}
+              <a href={VAKTIJA_URL} target="_blank" rel="noreferrer">
+                Vaktija.eu
+              </a>
             </span>
           </div>
         </>

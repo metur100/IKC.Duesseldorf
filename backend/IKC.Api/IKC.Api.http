@@ -1,0 +1,37 @@
+@api = http://localhost:5013
+# Token iz odgovora na login
+@token = 
+
+GET {{api}}/api/vaktija/dusseldorf?lang=bs
+
+###
+GET {{api}}/api/content/bs
+
+###
+POST {{api}}/api/auth/login
+Content-Type: application/json
+
+{ "username": "admin", "password": "" }
+
+###
+GET {{api}}/api/admin/content
+Authorization: Bearer {{token}}
+
+###
+GET {{api}}/api/admin/content/bs/prayer
+Authorization: Bearer {{token}}
+
+###
+PUT {{api}}/api/admin/content/bs/prayer
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "sabah": "SABAH-NAMAZ u džematu",
+  "sabahNote": "35 minuta prije izlaska sunca / vor Sonnenaufgang",
+  "dzuma": "DŽUMA-NAMAZ / Freitagsgebet: 14:00 sati"
+}
+
+###
+GET {{api}}/api/admin/images
+Authorization: Bearer {{token}}
