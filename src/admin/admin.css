@@ -1,0 +1,107 @@
+/* Admin panel (/admin). Koristi boje i .form/.field stilove sa ostatka stranice. */
+
+.admin { min-height: 100vh; background: var(--parchment); }
+.admin h1, .admin h2 { font-size: 1.35rem; }
+.admin-muted { color: var(--muted); font-size: 0.88rem; }
+.admin button { font-family: inherit; cursor: pointer; }
+.admin button:disabled { cursor: not-allowed; opacity: 0.5; }
+
+.admin-top {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+  padding: 0.75rem 1.25rem; background: var(--green-900); color: #fff;
+}
+.admin-brand { font-family: var(--font-display); font-size: 1.1rem; }
+.admin-brand span { color: var(--gold-light); font-family: var(--font-body); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; margin-left: 0.4rem; }
+.admin-tabs { display: flex; gap: 0.25rem; }
+.admin-tabs button, .admin-user button {
+  background: transparent; color: rgba(255,255,255,0.8); border: 0; padding: 0.45rem 0.9rem; border-radius: 999px; font-size: 0.92rem;
+}
+.admin-tabs button:hover, .admin-user button:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.admin-tabs button.active { background: var(--gold); color: var(--green-900); font-weight: 600; }
+.admin-user { margin-left: auto; display: flex; align-items: center; gap: 0.9rem; font-size: 0.9rem; }
+.admin-user a { color: var(--gold-light); }
+
+.admin-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+  padding: 0.6rem 1.2rem; border-radius: 999px; border: 1.5px solid var(--green-800);
+  background: var(--green-800); color: #fff; font-weight: 600; font-size: 0.9rem; transition: background 0.15s;
+}
+.admin-btn:hover:not(:disabled) { background: var(--green-700); }
+.admin-btn-light { background: #fff; color: var(--green-800); }
+.admin-btn-light:hover:not(:disabled) { background: var(--parchment); }
+.admin-btn-danger { background: #fff; color: #a32020; border-color: #e5b5b5; }
+.admin-btn-danger:hover:not(:disabled) { background: #fbeaea; }
+
+.admin-card { background: #fff; border: 1px solid var(--parchment-dark); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow-sm); }
+.admin-card h2 { margin-bottom: 0.4rem; }
+
+.admin-notice {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 0.75rem 1rem; border-radius: 10px; margin-bottom: 1rem; font-size: 0.92rem;
+}
+.admin-notice.ok { background: #e3f2ea; color: var(--green-900); border: 1px solid #b7dcc8; }
+.admin-notice.error { background: #fbeaea; color: #7d1a1a; border: 1px solid #e5b5b5; }
+.admin-notice button { background: none; border: 0; color: inherit; font-size: 1rem; }
+
+/* Prijava */
+.admin-login { min-height: 100vh; display: grid; place-items: center; padding: 1.25rem; background: var(--green-900); }
+.admin-login .admin-card { width: 100%; max-width: 400px; }
+.admin-login h1 { margin-bottom: -0.6rem; }
+
+/* Sadržaj */
+.admin-layout { display: grid; grid-template-columns: 240px 1fr; gap: 1.5rem; padding: 1.5rem 1.25rem; max-width: 1280px; margin: 0 auto; align-items: start; }
+.admin-side { position: sticky; top: 76px; display: flex; flex-direction: column; gap: 0.8rem; }
+.admin-side ul { display: flex; flex-direction: column; gap: 0.15rem; }
+.admin-side ul button {
+  width: 100%; text-align: left; background: transparent; border: 0; padding: 0.5rem 0.8rem; border-radius: 8px; color: var(--ink); font-size: 0.93rem;
+}
+.admin-side ul button:hover { background: var(--parchment-dark); }
+.admin-side ul button.active { background: var(--green-800); color: #fff; font-weight: 600; }
+.admin-lang { display: grid; grid-template-columns: 1fr 1fr; background: #fff; border: 1px solid var(--parchment-dark); border-radius: 999px; padding: 3px; }
+.admin-lang button { border: 0; background: transparent; padding: 0.4rem; border-radius: 999px; font-size: 0.85rem; color: var(--muted); }
+.admin-lang button.active { background: var(--gold); color: var(--green-900); font-weight: 600; }
+.admin-publish { margin-top: 0.5rem; }
+
+.admin-main { min-width: 0; }
+.admin-main-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.admin-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.admin-pill { display: inline-block; font-family: var(--font-body); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; background: var(--parchment-dark); color: var(--green-800); padding: 0.15rem 0.5rem; border-radius: 999px; vertical-align: middle; }
+.admin .field textarea { resize: vertical; line-height: 1.5; }
+
+.admin-group { border: 1px solid var(--parchment-dark); border-radius: 12px; padding: 1rem; display: grid; gap: 0.9rem; min-width: 0; }
+.admin-group legend { padding: 0 0.4rem; font-weight: 700; font-size: 0.9rem; color: var(--green-900); }
+.admin-count { display: inline-block; min-width: 1.4rem; text-align: center; font-size: 0.72rem; background: var(--parchment); color: var(--muted); border-radius: 999px; padding: 0 0.35rem; margin-left: 0.2rem; }
+.admin-list { list-style: none; display: grid; gap: 0.6rem; counter-reset: item; }
+.admin-list-item { display: grid; grid-template-columns: 1fr auto; gap: 0.6rem; align-items: start; padding: 0.75rem; background: #fcfaf5; border: 1px solid var(--parchment-dark); border-radius: 10px; }
+.admin-list-body { display: grid; gap: 0.7rem; min-width: 0; }
+.admin-list-tools { display: flex; flex-direction: column; gap: 0.25rem; }
+.admin-list-tools button { width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--parchment-dark); background: #fff; color: var(--green-800); font-size: 0.85rem; }
+.admin-list-tools button:hover:not(:disabled) { background: var(--parchment); }
+.admin-list-tools button.danger { color: #a32020; }
+.admin-check { display: flex; gap: 0.5rem; align-items: center; font-size: 0.9rem; }
+
+/* Slike i korisnici */
+.admin-page { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1.25rem; display: grid; gap: 1.25rem; }
+.admin-images { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1rem; }
+.admin-images li { padding: 0.8rem; display: grid; gap: 0.6rem; }
+.admin-images img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 8px; background: var(--parchment); }
+.admin-image-meta { display: grid; gap: 0.15rem; font-size: 0.9rem; }
+.admin-image-meta .admin-muted { font-size: 0.78rem; }
+.admin-two { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; align-items: start; }
+.admin-table { width: 100%; border-collapse: collapse; margin-top: 0.6rem; font-size: 0.92rem; }
+.admin-table th, .admin-table td { text-align: left; padding: 0.6rem 0.5rem; border-bottom: 1px solid var(--parchment-dark); }
+.admin-table th { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.admin-table td:last-child { text-align: right; }
+
+@media (max-width: 860px) {
+  .admin-layout { grid-template-columns: 1fr; padding: 1rem; }
+  .admin-side { position: static; }
+  .admin-side ul { flex-direction: row; flex-wrap: wrap; }
+  .admin-side ul button { width: auto; background: #fff; border: 1px solid var(--parchment-dark); }
+  .admin-two, .admin .form .row { grid-template-columns: 1fr; }
+  .admin-user { margin-left: 0; width: 100%; justify-content: space-between; }
+  .admin-page { padding: 1rem; }
+  .admin-card { padding: 1rem; }
+  .admin-table th:nth-child(3), .admin-table td:nth-child(3) { display: none; }
+}

@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
-import { useEffect } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
@@ -17,6 +17,9 @@ import Faq from './pages/Faq'
 import Contact from './pages/Contact'
 import { useLang } from './context/LanguageContext'
 import { fullTitle, pageFor } from './seo/pages'
+
+// Admin panel se učitava tek kad se otvori /admin, pa ne povećava javnu stranicu.
+const AdminApp = lazy(() => import('./admin/AdminApp'))
 
 function setMeta(selector: string, attr: 'content' | 'href', value: string) {
   const el = document.head.querySelector(selector)
@@ -50,6 +53,15 @@ function ScrollTop() {
 }
 
 export default function App() {
+  const { pathname } = useLocation()
+  if (pathname === '/admin' || pathname.startsWith('/admin/')) {
+    return (
+      <Suspense fallback={null}>
+        <AdminApp />
+      </Suspense>
+    )
+  }
+
   return (
     <>
       <ScrollTop />
