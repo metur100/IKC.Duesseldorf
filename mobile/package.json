@@ -1,0 +1,43 @@
+{
+  "name": "ikc-duesseldorf-mobile",
+  "version": "1.0.0",
+  "main": "expo-router/entry",
+  "dependencies": {
+    "@expo-google-fonts/inter": "^0.4.2",
+    "@expo-google-fonts/playfair-display": "^0.4.2",
+    "@expo/vector-icons": "^15.0.2",
+    "@react-native-async-storage/async-storage": "2.2.0",
+    "expo": "~58.0.19",
+    "expo-application": "~58.1.2",
+    "expo-constants": "~58.0.13",
+    "expo-font": "~58.0.10",
+    "expo-image": "~58.0.17",
+    "expo-linking": "~58.0.14",
+    "expo-router": "~58.0.26",
+    "expo-splash-screen": "~58.0.11",
+    "expo-status-bar": "~58.0.4",
+    "expo-system-ui": "~58.0.6",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-native": "0.88.0",
+    "react-native-safe-area-context": "~5.10.1",
+    "react-native-screens": "~4.30.0",
+    "react-native-webview": "14.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "~19.3.0",
+    "typescript": "~6.0.3"
+  },
+  "scripts": {
+    "sync-content": "node scripts/sync-content.mjs",
+    "start": "npm run sync-content && expo start",
+    "android": "npm run sync-content && expo start --android",
+    "ios": "npm run sync-content && expo start --ios",
+    "typecheck": "tsc --noEmit",
+    "export:android": "npm run sync-content && expo export --platform android",
+    "build:android": "npm run sync-content && eas build -p android --profile production",
+    "build:apk": "npm run sync-content && eas build -p android --profile production-apk",
+    "build:ios": "npm run sync-content && eas build -p ios --profile production"
+  },
+  "private": true
+}

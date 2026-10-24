@@ -1,0 +1,16 @@
+node_modules/
+.expo/
+dist/
+web-build/
+android/
+ios/
+.claude/
+credentials.json
+*.jks
+*.keystore
+*.p8
+*.p12
+*.key
+*.mobileprovision
+google-service-account.json
+*.tsbuildinfo

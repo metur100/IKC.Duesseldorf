@@ -323,7 +323,7 @@ function Hero({ block, lang }: { block: Extract<Block, { type: 'hero' }>; lang: 
   }, [])
 
   return (
-    <section className="hero" data-block={block.id}>
+    <section className={`hero ${block.image ? '' : 'hero-plain'}`} data-block={block.id}>
       {block.image && (
         <div className="hero-bg" style={{ transform: `translate3d(0, ${offset * 0.25}px, 0)` }}>
           <img src={imageUrl(block.image)} alt="" />

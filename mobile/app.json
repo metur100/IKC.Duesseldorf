@@ -1,0 +1,51 @@
+{
+  "expo": {
+    "name": "IKC Düsseldorf",
+    "slug": "ikc-duesseldorf",
+    "owner": "certi-development",
+    "scheme": "ikcd",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#f7f1e3",
+    "primaryColor": "#0b4636",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.certidevelopment.ikcd",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false,
+        "UIRequiresFullScreen": true
+      }
+    },
+    "android": {
+      "package": "com.certidevelopment.ikcd",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0b4636"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#0b4636",
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 200
+        }
+      ],
+      "expo-font",
+      "expo-image",
+      "expo-status-bar"
+    ],
+    "extra": {
+      "apiUrl": "https://ikcduesseldorf.runasp.net",
+      "siteUrl": "https://metur100.github.io/IKC.Duesseldorf",
+      "eas": {
+        "projectId": "c82ac6c5-6d56-46f7-9460-675b85e00cd9"
+      }
+    }
+  }
+}
