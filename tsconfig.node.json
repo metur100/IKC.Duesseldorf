@@ -16,10 +16,5 @@
     "outDir": "./node_modules/.tmp/tsconfig-node",
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo"
   },
-  "include": [
-    "vite.config.ts",
-    "src/seo/pages.ts",
-    "src/i18n/content.ts",
-    "src/i18n/content.json"
-  ]
+  "include": ["vite.config.ts", "src/cms/types.ts", "src/cms/site.json"]
 }

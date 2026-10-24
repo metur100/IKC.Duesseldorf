@@ -71,6 +71,10 @@ builder.Services.AddRateLimiter(options =>
     options.AddPolicy("login", context => RateLimitPartition.GetFixedWindowLimiter(
         context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
         _ => new FixedWindowRateLimiterOptions { PermitLimit = 5, Window = TimeSpan.FromMinutes(1) }));
+    // Javni obrasci (prijava za članstvo): zaštita od spama.
+    options.AddPolicy("forms", context => RateLimitPartition.GetFixedWindowLimiter(
+        context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+        _ => new FixedWindowRateLimiterOptions { PermitLimit = 5, Window = TimeSpan.FromMinutes(10) }));
 });
 
 var app = builder.Build();
@@ -87,5 +91,6 @@ app.MapAuthEndpoints();
 app.MapContentEndpoints();
 app.MapImageEndpoints();
 app.MapVaktijaEndpoints();
+app.MapMembershipEndpoints();
 
 app.Run();

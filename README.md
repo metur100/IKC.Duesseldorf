@@ -1,56 +1,55 @@
-# IKC Düsseldorf — Web stranica
+# IKC Düsseldorf — web stranica, admin (CMS) i aplikacija
 
-Moderna verzija web stranice **IGBD - Gemeinde IKC Düsseldorf e.V.**
-Napravljeno sa React + TypeScript + Vite. Dvojezično: **bosanski (BS)** i **njemački (DE)**.
+Web stranica **IGBD – Gemeinde IKC Düsseldorf e.V.**, dvojezično (bosanski / njemački).
+
+- `src/` — web stranica (React + TypeScript + Vite), objavljena na GitHub Pages
+- `src/admin/` — admin panel (CMS) na `/admin`
+- `backend/IKC.Api/` — ASP.NET Core API na MonsterASP (https://ikcduesseldorf.runasp.net)
+- `mobile/` — iOS/Android aplikacija (Expo), vidi `mobile/README.md`
+- `brand/` — logo i ikonice (izvor: `brand/mark.mjs`, generisanje: `brand/gen.mjs`)
+
+## Kako radi sadržaj
+
+Svaka stranica je lista **blokova** (tekst, slika i tekst, galerija, kartice, lista, FAQ, osobe, hronologija,
+vaktija, obrazac za članstvo, mapa…). Model je u `src/cms/types.ts`. Admini u `/admin`:
+
+- uređuju stranice blok po blok (dodavanje, prevlačenje, dupliranje, sakrivanje), uz pregled uživo (računar/mobitel)
+- prave nove stranice (prvo kao nacrt), mijenjaju adresu, opis za Google i zaglavlje
+- uređuju meni, footer, kontakt, vrijeme džume i obavještenje na vrhu stranice
+- učitavaju slike (ImgBB), pregledaju online prijave za članstvo (izvoz u Excel/CSV), upravljaju adminima
+- vraćaju ranije verzije stranice (zadnjih 30) i obrisane stranice
+
+Sačuvana izmjena je **odmah vidljiva** na stranici i u aplikaciji (sadržaj se učitava sa `GET /api/site`).
+`src/cms/site.json` je rezerva/početni sadržaj; GitHub Actions ga prije svakog builda osvježi sa API-ja
+(`scripts/fetch-content.mjs`), da Google dobije aktuelne naslove i opise.
+
+## Vaktija
+
+Backend jednom dnevno preuzme vaktiju za cijeli mjesec sa vaktija.eu i sačuva je u bazu
+(`GET /api/vaktija/dusseldorf`). Stranica i aplikacija same računaju sljedeći namaz i odbrojavanje (po berlinskom vremenu).
+Ako vaktija.eu ne odgovori, koristi se ranije sačuvani mjesec.
 
 ## Pokretanje (development)
 
 ```bash
 npm install
-npm run dev
-```
+npm run dev          # http://localhost:5173, /api ide na localhost:5013
 
-Otvorite adresu koju ispiše terminal (obično http://localhost:5173).
-
-## Build za produkciju
-
-```bash
-npm run build
-npm run preview
-```
-
-## Backend (backend/IKC.Api)
-
-ASP.NET Core (.NET 10) API na MonsterASP (https://ikcduesseldorf.runasp.net):
-
-- `GET /api/vaktija/dusseldorf?lang=bs|de`: vremena namaza sa **vaktija.eu** (keširano do ponoći; ako vaktija.eu padne, vremena dolaze iz keširanog mjeseca)
-- `GET /api/content`: sav sadržaj stranice (isti oblik kao `src/i18n/content.json`)
-- `POST /api/auth/login`: prijava admina (JWT)
-- `/api/admin/content/{lang}/{key}` (GET/PUT), `/api/admin/images` (upload na ImgBB), `/api/admin/users`: za admin panel
-
-Kad admin sačuva izmjenu, backend pokreće GitHub Actions (`repository_dispatch: content-updated`), workflow
-preuzme sadržaj sa API-ja (`scripts/fetch-content.mjs`) i ponovo objavi statičnu stranicu.
-
-Lokalno:
-
-```bash
 cd backend/IKC.Api
 dotnet user-secrets set "Jwt:Key" "<najmanje 32 znaka>"
 dotnet user-secrets set "ImgBb:ApiKey" "<ključ>"
 dotnet user-secrets set "Admin:Password" "<lozinka za prvog admina>"
-dotnet run            # http://localhost:5013, SQLite baza ikc-dev.db
+dotnet run           # http://localhost:5013, SQLite baza ikc-dev.db (puni se iz src/cms/site.json)
 ```
 
-`npm run dev` prosljeđuje `/api` na `http://localhost:5013`.
+## Backend API
 
-Produkcija: tajne su u `backend/IKC.Api/appsettings.Production.json` (nije u gitu). Za automatsku objavu poslije izmjene
-treba u njega dodati `"GitHub": { "Token": "..." }` (fine-grained token za ovaj repo, dozvola *Contents: read and write*).
+- `GET /api/site` — postavke i objavljene stranice
+- `GET /api/vaktija/dusseldorf` — danas, sutra i cijeli mjesec
+- `POST /api/membership` — online prijava za članstvo
+- `POST /api/auth/login` — prijava admina (JWT)
+- `/api/admin/...` — stranice, postavke, revizije, slike, prijave, admini
 
-## Struktura
-
-- `src/i18n/` — svi prijevodi (BS/DE) i sav tekstualni sadržaj sajta
-- `src/context/` — prebacivanje jezika
-- `src/components/` — Navbar, Footer, PrayerBanner
-- `src/pages/` — sve stranice (Početna, O nama, Aktivnosti, FAQ, Članarina, Kontakt/Impressum...)
-
-Sve informacije su preuzete sa originalne stranice ikc-d.org i sačuvane.
+Produkcija: tajne su u `backend/IKC.Api/appsettings.Production.json` (nije u gitu). Nove tabele se prave same pri
+pokretanju (`DbSeeder.EnsureTablesAsync`). Deploy: `dotnet publish -c Release` pa Web Deploy na MonsterASP.
+Za automatski novi build stranice poslije izmjene (samo za SEO) dodati `"GitHub": { "Token": "..." }`.

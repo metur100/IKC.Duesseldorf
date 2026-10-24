@@ -34,4 +34,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   )
 }
 
+/** Fiksni jezik za dio stranice (admin pregled), bez mijenjanja jezika koji je posjetilac odabrao. */
+export function FixedLanguage({ lang, children }: { lang: Lang; children: ReactNode }) {
+  return <LanguageContext.Provider value={{ lang, setLang: () => {}, toggle: () => {} }}>{children}</LanguageContext.Provider>
+}
+
 export const useLang = () => useContext(LanguageContext)

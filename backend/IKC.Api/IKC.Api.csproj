@@ -16,7 +16,7 @@
 
   <!-- Početni sadržaj baze: isti fajl koji frontend koristi kao rezervu. -->
   <ItemGroup>
-    <None Include="..\..\src\i18n\content.json" Link="Seed\content.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <None Include="..\..\src\cms\site.json" Link="Seed\site.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

@@ -1,47 +1,60 @@
 import { Link } from 'react-router-dom'
 import { useLang } from '../context/LanguageContext'
-import { content } from '../i18n/content'
+import { useSite } from '../cms/site'
+import { navHref, SmartLink } from '../cms/links'
+import { t } from '../cms/blocks'
+import { ui } from '../cms/ui'
+
+const LOGO_LIGHT = `${import.meta.env.BASE_URL}brand/logo-light.svg`
 
 export default function Footer() {
   const { lang } = useLang()
-  const t = content[lang]
-  const logoUrl = `${import.meta.env.BASE_URL}logo.png`
+  const { site } = useSite()
+  const s = ui(lang)
+  const { contact } = site.settings
+  const links = site.settings.nav.flatMap((item) => (item.children.length ? item.children : [item]))
+
   return (
-    <footer className="footer">
-      <div className="container">
-        <div className="footer-grid">
-          <div>
-            <div className="brand" style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.2rem' }}>
-              <img src={logoUrl} alt="IKC Düsseldorf logo" className="brand-logo" />
-              IKC Düsseldorf
-            </div>
-            <p>{t.footer.about}</p>
-          </div>
-          <div>
-            <h4>{t.footer.quickLinks}</h4>
-            <ul>
-              <li><Link to="/o-nama">{t.nav.about}</Link></li>
-              <li><Link to="/aktivnosti">{t.nav.activities}</Link></li>
-              <li><Link to="/za-malisane">{t.nav.kids}</Link></li>
-              <li><Link to="/clanarina">{t.nav.membership}</Link></li>
-              <li><Link to="/faq">FAQ</Link></li>
-              <li><Link to="/kontakt">{t.nav.contact}</Link></li>
-              <li><a href="https://ikc-d.org/dzemat/kalendar-i-termini/" target="_blank" rel="noreferrer">Kalendar i termini</a></li>
-              <li><a href="https://ikc-d.org/impressum/" target="_blank" rel="noreferrer">Impressum</a></li>
-              <li><a href="https://ikc-d.org/datenschutzerklaerung/" target="_blank" rel="noreferrer">Datenschutzerklärung</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4>{t.footer.contact}</h4>
-            <ul>
-              <li>{t.contact.org}</li>
-              <li>{t.contact.address}</li>
-              <li><a href={`tel:${t.contact.phone.replace(/\s/g, '')}`}>{t.contact.phone}</a></li>
-              <li><a href={`mailto:${t.contact.email}`}>{t.contact.email}</a></li>
-            </ul>
-          </div>
+    <footer className="site-footer">
+      <div className="container footer-grid">
+        <div className="footer-brand">
+          <Link to="/" className="brand">
+            <img src={LOGO_LIGHT} alt="" width="44" height="44" />
+            <span>
+              <strong>{site.settings.siteName}</strong>
+              <small>{t(site.settings.tagline, lang)}</small>
+            </span>
+          </Link>
+          <p>{t(site.settings.footerText, lang)}</p>
         </div>
-        <div className="footer-bottom">{t.footer.rights}</div>
+        <div>
+          <h2>{s.footerContact}</h2>
+          <ul>
+            <li>{contact.org}</li>
+            <li>{contact.address}</li>
+            {contact.phone && <li><a href={`tel:${contact.phone.replace(/[^\d+]/g, '').replace(/^0/, '+49')}`}>{contact.phone}</a></li>}
+            {contact.email && <li><a href={`mailto:${contact.email}`}>{contact.email}</a></li>}
+          </ul>
+        </div>
+        <div>
+          <h2>{s.footerLinks}</h2>
+          <ul className="footer-links">
+            {links.map((item) => (
+              <li key={item.id}><SmartLink href={navHref(item)}>{t(item.label, lang)}</SmartLink></li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <div className="container footer-bottom">
+        <span>© {new Date().getFullYear()} {contact.org}. {s.rights}</span>
+        <span className="footer-legal">
+          {site.settings.footerLinks.map((l, i) => (
+            <SmartLink key={i} href={navHref(l)}>{t(l.label, lang)}</SmartLink>
+          ))}
+          {site.settings.social.map((l, i) => (
+            <a key={`s${i}`} href={l.href} target="_blank" rel="noreferrer">{l.label}</a>
+          ))}
+        </span>
       </div>
     </footer>
   )
