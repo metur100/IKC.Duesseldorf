@@ -67,6 +67,7 @@ export default function AdminScreen() {
             <Pressable
               onPress={() => {
                 setFailed(false)
+                setLoading(true)
                 ref.current?.reload()
               }}
               style={s.retry}
@@ -91,7 +92,9 @@ export default function AdminScreen() {
           setSupportMultipleWindows={false}
           allowsInlineMediaPlayback
           onNavigationStateChange={(nav: NavState) => setCanGoBack(nav.canGoBack)}
-          onLoadStart={() => setLoading(true)}
+          // Ne koristimo onLoadStart: Android ga šalje i pri SPA navigaciji (history.pushState),
+          // a onLoadEnd tada nikad ne dođe pa bi spinner vrtio zauvijek. Napredak dolazi samo za prava učitavanja.
+          onLoadProgress={(e: { nativeEvent: { progress: number } }) => setLoading(e.nativeEvent.progress < 1)}
           onLoadEnd={() => setLoading(false)}
           onError={() => setFailed(true)}
           onShouldStartLoadWithRequest={(req: LoadRequest) => {
