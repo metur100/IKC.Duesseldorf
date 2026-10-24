@@ -144,13 +144,14 @@ main.has-hero { margin-top: calc(-1 * var(--header-h)); }
 .nav-menu a.active { color: var(--gold-600); font-weight: 600; }
 
 .header-tools { display: flex; align-items: center; gap: 0.6rem; margin-left: auto; flex-shrink: 0; }
-.prayer-chip {
-  display: none; align-items: baseline; gap: 0.45rem;
-  padding: 0.45rem 0.85rem; border-radius: 999px;
+.admin-chip {
+  display: none; align-items: center; gap: 0.4rem;
+  min-height: 38px; padding: 0.4rem 0.85rem; border-radius: 999px;
   border: 1px solid rgba(127, 127, 127, 0.3);
-  font-size: 0.85rem; text-decoration: none; white-space: nowrap;
+  font-size: 0.85rem; font-weight: 600; text-decoration: none; white-space: nowrap;
+  transition: background 0.2s;
 }
-.prayer-chip strong { font-weight: 650; }
+.admin-chip:hover { background: rgba(127, 127, 127, 0.12); }
 .lang-switch { display: inline-flex; padding: 3px; border-radius: 999px; border: 1px solid rgba(127, 127, 127, 0.3); }
 .lang-switch button { min-width: 38px; min-height: 32px; border-radius: 999px; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.05em; opacity: 0.7; }
 .lang-switch button.on { background: var(--green-900); color: var(--white); opacity: 1; }
@@ -178,9 +179,10 @@ main.has-hero { margin-top: calc(-1 * var(--header-h)); }
 .m-sub { font-family: var(--font-body); font-size: 1.05rem; border: 0; padding: 0.55rem 0; }
 .m-footer { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-top: 1.5rem; flex-wrap: wrap; }
 .m-footer a { color: var(--green-900); font-weight: 600; }
+.m-admin { display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none; }
 
 @media (min-width: 640px) {
-  .prayer-chip { display: inline-flex; }
+  .admin-chip { display: inline-flex; }
 }
 @media (min-width: 1080px) {
   .main-nav { display: flex; }

@@ -5,8 +5,7 @@ import { useSite } from '../cms/site'
 import { navHref, SmartLink } from '../cms/links'
 import { t } from '../cms/blocks'
 import { ui } from '../cms/ui'
-import { prayerState, useNow, useVaktija } from '../cms/vaktija'
-import { PRAYER_NAMES, type NavItem } from '../cms/types'
+import type { NavItem } from '../cms/types'
 
 const LOGO = `${import.meta.env.BASE_URL}brand/logo.svg`
 const LOGO_LIGHT = `${import.meta.env.BASE_URL}brand/logo-light.svg`
@@ -71,7 +70,7 @@ export default function Header({ overHero }: { overHero: boolean }) {
           </nav>
 
           <div className="header-tools">
-            <NextPrayerChip />
+            <AdminLink className="admin-chip" />
             <LangSwitch lang={lang} setLang={setLang} />
             <button type="button" className="burger" aria-expanded={open} aria-controls="mobile-menu" aria-label={open ? s.close : s.menu} onClick={() => setOpen(!open)}>
               <span />
@@ -99,6 +98,7 @@ export default function Header({ overHero }: { overHero: boolean }) {
           <div className="m-footer">
             <LangSwitch lang={lang} setLang={setLang} />
             <a href={`tel:${site.settings.contact.phone.replace(/[^\d+]/g, '')}`}>{site.settings.contact.phone}</a>
+            <AdminLink className="m-admin" />
           </div>
         </nav>
       </div>
@@ -147,16 +147,14 @@ function LangSwitch({ lang, setLang }: { lang: 'bs' | 'de'; setLang: (l: 'bs' | 
   )
 }
 
-function NextPrayerChip() {
-  const { lang } = useLang()
-  const { data } = useVaktija()
-  const now = useNow(30_000)
-  const state = data ? prayerState(data, now) : null
-  if (!state) return null
+function AdminLink({ className }: { className: string }) {
   return (
-    <Link to="/vaktija" className="prayer-chip" title={ui(lang).nextPrayer}>
-      <span>{PRAYER_NAMES[lang][state.next]}</span>
-      <strong className="tabular">{state.nextTime}</strong>
+    <Link to="/admin" className={className}>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <rect x="5" y="11" width="14" height="10" rx="2" />
+        <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+      </svg>
+      <span>Admin</span>
     </Link>
   )
 }
