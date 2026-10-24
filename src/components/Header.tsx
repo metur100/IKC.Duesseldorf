@@ -70,7 +70,7 @@ export default function Header({ overHero }: { overHero: boolean }) {
           </nav>
 
           <div className="header-tools">
-            <AdminLink className="admin-chip" />
+            <AdminLink className="admin-chip" iconOnly />
             <LangSwitch lang={lang} setLang={setLang} />
             <button type="button" className="burger" aria-expanded={open} aria-controls="mobile-menu" aria-label={open ? s.close : s.menu} onClick={() => setOpen(!open)}>
               <span />
@@ -147,14 +147,16 @@ function LangSwitch({ lang, setLang }: { lang: 'bs' | 'de'; setLang: (l: 'bs' | 
   )
 }
 
-function AdminLink({ className }: { className: string }) {
+/** Ulaz u administraciju. U zaglavlju samo ikonica katanca, u meniju sa tekstom. */
+function AdminLink({ className, iconOnly }: { className: string; iconOnly?: boolean }) {
+  const size = iconOnly ? 21 : 16
   return (
-    <Link to="/admin" className={className}>
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <Link to="/admin" className={className} aria-label="Admin" title={iconOnly ? 'Admin' : undefined}>
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <rect x="5" y="11" width="14" height="10" rx="2" />
         <path d="M8 11V7a4 4 0 0 1 8 0v4" />
       </svg>
-      <span>Admin</span>
+      {!iconOnly && <span>Admin</span>}
     </Link>
   )
 }

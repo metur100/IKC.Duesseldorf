@@ -145,10 +145,9 @@ main.has-hero { margin-top: calc(-1 * var(--header-h)); }
 
 .header-tools { display: flex; align-items: center; gap: 0.6rem; margin-left: auto; flex-shrink: 0; }
 .admin-chip {
-  display: none; align-items: center; gap: 0.4rem;
-  min-height: 38px; padding: 0.4rem 0.85rem; border-radius: 999px;
+  display: inline-grid; place-items: center; flex-shrink: 0;
+  width: 44px; height: 44px; border-radius: 50%;
   border: 1px solid rgba(127, 127, 127, 0.3);
-  font-size: 0.85rem; font-weight: 600; text-decoration: none; white-space: nowrap;
   transition: background 0.2s;
 }
 .admin-chip:hover { background: rgba(127, 127, 127, 0.12); }
@@ -181,9 +180,15 @@ main.has-hero { margin-top: calc(-1 * var(--header-h)); }
 .m-footer a { color: var(--green-900); font-weight: 600; }
 .m-admin { display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none; }
 
-@media (min-width: 640px) {
-  .admin-chip { display: inline-flex; }
+@media (max-width: 639px) {
+  .header-tools { gap: 0.4rem; }
 }
+/* Uski telefoni: jezik se bira u meniju, da naziv ima mjesta */
+@media (max-width: 419px) {
+  .header-tools > .lang-switch { display: none; }
+}
+.brand span { overflow: hidden; }
+.brand strong { overflow: hidden; text-overflow: ellipsis; }
 @media (min-width: 1080px) {
   .main-nav { display: flex; }
   .header-tools { margin-left: 0.5rem; }
