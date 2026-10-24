@@ -609,7 +609,7 @@ export function Blocks({ blocks, firstTopInset = 0 }: { blocks: Block[]; firstTo
 
 const s = StyleSheet.create({
   caption: { fontSize: 13, marginTop: space.sm, textAlign: 'center' },
-  card: { backgroundColor: colors.paper, borderRadius: radius.md, overflow: 'hidden', borderWidth: StyleSheet.hairlineWidth, borderColor: colors.line, height: '100%' },
+  card: { backgroundColor: colors.paper, borderRadius: radius.md, overflow: 'hidden', borderWidth: StyleSheet.hairlineWidth, borderColor: colors.line, flexGrow: 1 },
   cardDark: { backgroundColor: 'rgba(255,255,255,0.05)', borderColor: colors.lineDark },
   cardTitle: { fontFamily: fonts.display, fontSize: 20, lineHeight: 26, color: colors.green },
   cardText: { fontFamily: fonts.body, fontSize: 15, lineHeight: 23, color: colors.muted, marginTop: space.sm },
