@@ -415,3 +415,25 @@ html.is-preview .hero { min-height: 640px; }
   .a-editor-bar .a-icon-btn { width: 36px; height: 36px; }
   .a-editor-bar .a-btn-primary { min-height: 36px; padding: 0.3rem 0.7rem; font-size: 0.82rem; }
 }
+
+/* Telefon/tablet: lijevi meni kao ladica (dugme ☰ u gornjoj traci) */
+@media (max-width: 1023px) {
+  .a-side {
+    display: flex; flex-direction: column; gap: 1.5rem;
+    position: fixed; top: 0; bottom: 0; left: 0; z-index: 60;
+    width: min(290px, 85vw); padding: 1.25rem 0.9rem calc(1.25rem + env(safe-area-inset-bottom));
+    background: #fff; box-shadow: 0 0 40px rgba(0, 0, 0, 0.25); overflow-y: auto;
+    transform: translateX(-105%); transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .a-shell.menu-open .a-side { transform: none; }
+  .a-side-backdrop { position: fixed; inset: 0; z-index: 55; background: rgba(15, 25, 20, 0.45); animation: a-fade 0.15s; }
+  .a-side .a-brand { padding: 0 0.4rem; }
+  .a-side-nav { display: flex; flex-direction: column; gap: 2px; }
+  .a-side-nav a, .a-side-foot a, .a-side-foot button {
+    display: flex; align-items: center; gap: 0.75rem; min-height: 48px; padding: 0.6rem 0.75rem; border-radius: 10px;
+    text-decoration: none; color: #34403a; font-weight: 500; text-align: left; width: 100%; background: none; border: 0; cursor: pointer; font-size: 1rem;
+  }
+  .a-side-nav a.active { background: var(--a-green-50); color: var(--a-green); font-weight: 600; }
+  .a-side-foot { margin-top: auto; display: flex; flex-direction: column; gap: 2px; font-size: 0.95rem; }
+  .a-topbar .a-brand { margin-right: auto; }
+}

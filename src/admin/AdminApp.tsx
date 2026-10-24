@@ -69,14 +69,25 @@ function Shell({ onLogout }: { onLogout: () => void }) {
   const { user, loadError, reload } = useAdmin()
   const { pathname } = useLocation()
   const inEditor = pathname.startsWith('/admin/stranice/')
+  // Na telefonu se lijevi meni otvara dugmetom ☰ kao ladica.
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     document.title = 'Admin — IKC Düsseldorf'
+    setMenuOpen(false)
   }, [pathname])
 
+  useEffect(() => {
+    if (!menuOpen) return
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setMenuOpen(false)
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [menuOpen])
+
   return (
-    <div className={`adm a-shell ${inEditor ? 'in-editor' : ''}`}>
-      <aside className="a-side">
+    <div className={`adm a-shell ${inEditor ? 'in-editor' : ''} ${menuOpen ? 'menu-open' : ''}`}>
+      {menuOpen && <div className="a-side-backdrop" onClick={() => setMenuOpen(false)} />}
+      <aside className="a-side" id="a-side">
         <div className="a-brand">
           <img src={LOGO} alt="" width="34" height="34" />
           <span><strong>IKC Düsseldorf</strong><small>Uređivanje stranice</small></span>
@@ -95,6 +106,7 @@ function Shell({ onLogout }: { onLogout: () => void }) {
       </aside>
 
       <header className="a-topbar">
+        <button type="button" className="a-icon-btn" aria-label="Meni" aria-expanded={menuOpen} aria-controls="a-side" onClick={() => setMenuOpen(true)}><Icon name="nav" /></button>
         <div className="a-brand">
           <img src={LOGO} alt="" width="30" height="30" />
           <strong>Admin</strong>

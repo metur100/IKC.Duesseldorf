@@ -40,7 +40,8 @@ export default function AdminScreen() {
   }, [canGoBack])
 
   return (
-    <View style={{ flex: 1, backgroundColor: colors.green }}>
+    // paddingBottom: na Androidu (edge-to-edge) bi sistemska navigacija prekrila donju traku admina.
+    <View style={{ flex: 1, backgroundColor: colors.green, paddingBottom: insets.bottom }}>
       <View style={[s.bar, { paddingTop: insets.top }]}>
         <Pressable
           accessibilityRole="button"
