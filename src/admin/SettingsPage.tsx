@@ -190,7 +190,7 @@ function GeneralSettings({ settings, pages, onChange }: { settings: SiteSettings
         <h2>Džuma-namaz</h2>
         <div className="a-fields">
           <FieldEditor field={{ kind: 'text', key: 'time', label: 'Vrijeme' }} value={settings.jumuah.time} pages={pages} onChange={(v) => onChange({ ...settings, jumuah: { ...settings.jumuah, time: v as string } })} />
-          <FieldEditor field={{ kind: 'ltext', key: 'note', label: 'Tekst uz vaktiju', hint: 'npr. "Džuma-namaz petkom u 14:00"' }} value={settings.jumuah.note} pages={pages}
+          <FieldEditor field={{ kind: 'ltext', key: 'note', label: 'Tekst uz vaktiju', hint: 'npr. "Džuma-namaz petkom u 13:00"' }} value={settings.jumuah.note} pages={pages}
             onChange={(v) => onChange({ ...settings, jumuah: { ...settings.jumuah, note: v as SiteSettings['jumuah']['note'] } })} />
         </div>
       </section>

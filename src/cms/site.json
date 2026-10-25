@@ -221,10 +221,10 @@
    "lng": 6.76696
   },
   "jumuah": {
-   "time": "14:00",
+   "time": "13:00",
    "note": {
-    "bs": "Džuma-namaz petkom u 14:00",
-    "de": "Freitagsgebet um 14:00 Uhr"
+    "bs": "Džuma-namaz petkom u 13:00",
+    "de": "Freitagsgebet um 13:00 Uhr"
    }
   },
   "announcement": {
@@ -245,8 +245,8 @@
     "de": "Startseite"
    },
    "description": {
-    "bs": "IGBD – Gemeinde IKC Düsseldorf e.V.: bošnjački džemat i islamski kulturni centar u Düsseldorfu od 1983. Vaktija, džuma-namaz u 14:00, mekteb, predavanja i članstvo.",
-    "de": "IGBD – Gemeinde IKC Düsseldorf e.V.: bosniakische Moschee und islamisches Kulturzentrum in Düsseldorf seit 1983. Gebetszeiten, Freitagsgebet um 14 Uhr, Mekteb, Vorträge und Mitgliedschaft."
+    "bs": "IGBD – Gemeinde IKC Düsseldorf e.V.: bošnjački džemat i islamski kulturni centar u Düsseldorfu od 1983. Vaktija, džuma-namaz u 13:00, mekteb, predavanja i članstvo.",
+    "de": "IGBD – Gemeinde IKC Düsseldorf e.V.: bosniakische Moschee und islamisches Kulturzentrum in Düsseldorf seit 1983. Gebetszeiten, Freitagsgebet um 13 Uhr, Mekteb, Vorträge und Mitgliedschaft."
    },
    "header": {
     "eyebrow": {
@@ -706,8 +706,8 @@
         "de": "Freitagsgebet"
        },
        "value": {
-        "bs": "petkom u 14:00 (ders 20 minuta prije džume)",
-        "de": "freitags um 14:00 Uhr (Ders 20 Minuten vorher)"
+        "bs": "petkom u 13:00 (ders 20 minuta prije džume)",
+        "de": "freitags um 13:00 Uhr (Ders 20 Minuten vorher)"
        },
        "href": ""
       },
