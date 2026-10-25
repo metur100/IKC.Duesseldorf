@@ -22,7 +22,8 @@ export function useReveal(dep: unknown) {
           io.unobserve(e.target)
         }
       }),
-      { rootMargin: '0px 0px -8% 0px', threshold: 0.06 },
+      // threshold 0: vrlo dugi blokovi (npr. statut) nikad ne bi dostigli neki procenat vidljivosti
+      { rootMargin: '0px 0px -8% 0px', threshold: 0 },
     )
     items.forEach((el) => io.observe(el))
     return () => io.disconnect()
