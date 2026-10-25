@@ -1,5 +1,6 @@
 import { memo, useMemo } from 'react'
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
+import { router } from 'expo-router'
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native'
 import { PRAYER_KEYS, PRAYER_NAMES, type PrayerDay, type PrayerKey, type VaktijaResponse } from '@/cms/types'
 import { useContent } from '@/lib/content'
 import { useLang } from '@/lib/i18n'
@@ -9,11 +10,12 @@ import { Btn, useOnDark } from './ui'
 
 const tab = { fontVariant: ['tabular-nums' as const] }
 
-/** Kompaktna kartica "Sljedeći vakat" (za hero). */
-export function NextPrayerCard() {
-  const { lang, t } = useLang()
+/** Kartica za hero: sljedeći namaz s odbrojavanjem i sva današnja vremena (kao na web stranici). */
+export function HeroPrayerCard() {
+  const { lang, t, tx } = useLang()
   const st = usePrayerState()
   const { data, loading } = useVaktija()
+  const { site } = useContent()
   if (!st || !data) {
     return (
       <View style={[s.card, s.cardCenter]}>
@@ -21,18 +23,44 @@ export function NextPrayerCard() {
       </View>
     )
   }
+  const names = PRAYER_NAMES[lang]
+  const date = [tx(data.gregorian), tx(data.hijri)].filter(Boolean).join(' · ')
+  const jumuahNote = tx(site.settings.jumuah?.note)
   return (
-    <View style={s.card} accessible accessibilityLabel={`${t('nextPrayer')}: ${PRAYER_NAMES[lang][st.next.key]} ${st.next.time}`}>
-      <View style={{ flex: 1, minWidth: 0 }}>
-        <Text style={s.cardLabel}>{t('nextPrayer').toUpperCase()}</Text>
-        <Text style={s.cardName} numberOfLines={1} adjustsFontSizeToFit>
-          {PRAYER_NAMES[lang][st.next.key]}
-        </Text>
-        <Text style={s.cardCountdown}>
-          {t('inTime')} <Text style={tab}>{formatCountdown(st.next.remaining)}</Text>
-        </Text>
+    <View style={s.card}>
+      <View style={s.cardTop} accessible accessibilityLabel={`${t('nextPrayer')}: ${names[st.next.key]} ${st.next.time}, ${t('inTime')} ${formatCountdown(st.next.remaining)}`}>
+        <View style={{ flexShrink: 1 }}>
+          <Text style={s.cardLabel}>{t('nextPrayer').toUpperCase()}</Text>
+          <Text style={s.cardName} numberOfLines={1} adjustsFontSizeToFit>
+            {names[st.next.key]} <Text style={[s.cardNameTime, tab]}>{st.next.time}</Text>
+          </Text>
+        </View>
+        <View style={{ alignItems: 'flex-end' }}>
+          <Text style={s.cardLabel}>{t('inTime').toUpperCase()}</Text>
+          <Text style={[s.cardCountdown, tab]}>{formatCountdown(st.next.remaining)}</Text>
+        </View>
       </View>
-      <Text style={[s.cardTime, tab]}>{st.next.time}</Text>
+      {st.isCurrentDay && !!date && <Text style={s.cardDate}>{date}</Text>}
+      <View style={s.grid}>
+        {PRAYER_KEYS.map((k) => {
+          const current = st.current === k && st.isCurrentDay
+          const next = !st.next.tomorrow && st.next.key === k
+          return (
+            <View key={k} style={[s.tile, next && s.tileNext, current && s.tileCurrent]}>
+              <Text style={[s.tileName, current && s.tileNameCurrent]} numberOfLines={1}>
+                {names[k]}
+              </Text>
+              <Text style={[s.tileTime, tab, current && s.tileTimeCurrent]}>{st.today[k]}</Text>
+            </View>
+          )
+        })}
+      </View>
+      <View style={s.cardFoot}>
+        {!!jumuahNote && <Text style={s.cardFootText}>{jumuahNote}</Text>}
+        <Pressable onPress={() => router.navigate('/vaktija')} accessibilityRole="link" hitSlop={8}>
+          <Text style={s.cardFootLink}>{t('fullMonth')} →</Text>
+        </Pressable>
+      </View>
     </View>
   )
 }
@@ -185,24 +213,33 @@ export const MonthTable = memo(function MonthTable({ data }: { data: VaktijaResp
 })
 
 const s = StyleSheet.create({
-  // hero kartica
+  // hero kartica (boje kao .hero .prayer na web stranici)
   card: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(7,47,36,0.78)',
+    backgroundColor: 'rgba(5,37,28,0.62)',
     borderWidth: 1,
-    borderColor: 'rgba(201,162,74,0.55)',
-    borderRadius: radius.md,
-    paddingVertical: space.lg,
-    paddingHorizontal: space.lg + 2,
-    gap: space.md,
+    borderColor: 'rgba(255,255,255,0.16)',
+    borderRadius: radius.lg,
+    padding: space.lg + 2,
   },
   cardCenter: { justifyContent: 'center', alignItems: 'center', minHeight: 92 },
   cardMuted: { color: colors.onDarkMuted, fontFamily: fonts.body, fontSize: 14, textAlign: 'center' },
-  cardLabel: { color: colors.gold, fontFamily: fonts.semibold, fontSize: 11, letterSpacing: 1.5 },
-  cardName: { color: colors.onDark, fontFamily: fonts.display, fontSize: 24, marginTop: 2 },
-  cardCountdown: { color: colors.onDarkMuted, fontFamily: fonts.medium, fontSize: 14, marginTop: 2 },
-  cardTime: { color: colors.onDark, fontFamily: fonts.display, fontSize: 34 },
+  cardTop: { flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', gap: space.md },
+  cardLabel: { color: colors.goldLight, fontFamily: fonts.semibold, fontSize: 11, letterSpacing: 1.8 },
+  cardName: { color: colors.white, fontFamily: fonts.display, fontSize: 26, marginTop: 2 },
+  cardNameTime: { color: colors.goldLight },
+  cardCountdown: { color: colors.white, fontFamily: fonts.display, fontSize: 24, marginTop: 2 },
+  cardDate: { color: 'rgba(255,255,255,0.72)', fontFamily: fonts.body, fontSize: 13.5, marginTop: space.sm },
+  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, marginTop: space.lg },
+  tile: { flexBasis: '30%', flexGrow: 1, paddingVertical: 10, paddingHorizontal: 11, borderRadius: 12, borderWidth: 1, borderColor: 'transparent', backgroundColor: 'rgba(255,255,255,0.07)' },
+  tileNext: { borderColor: colors.gold },
+  tileCurrent: { backgroundColor: colors.gold },
+  tileName: { color: 'rgba(255,255,255,0.7)', fontFamily: fonts.body, fontSize: 12.5 },
+  tileNameCurrent: { color: 'rgba(5,37,28,0.75)' },
+  tileTime: { color: colors.white, fontFamily: fonts.semibold, fontSize: 18, marginTop: 2 },
+  tileTimeCurrent: { color: colors.greenDeep },
+  cardFoot: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', gap: space.sm, marginTop: space.lg },
+  cardFootText: { color: 'rgba(255,255,255,0.72)', fontFamily: fonts.body, fontSize: 13 },
+  cardFootLink: { color: colors.goldLight, fontFamily: fonts.semibold, fontSize: 13 },
 
   greg: { fontFamily: fonts.display, fontSize: 20, color: colors.green },
   hijri: { fontFamily: fonts.medium, fontSize: 14, color: colors.muted, marginTop: 2 },

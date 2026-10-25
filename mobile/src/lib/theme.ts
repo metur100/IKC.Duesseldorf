@@ -3,8 +3,10 @@ import { Platform } from 'react-native'
 export const colors = {
   green: '#0b4636',
   greenDark: '#072f24',
+  greenDeep: '#05251c',
   greenSoft: '#e3ece7',
   gold: '#c9a24a',
+  goldLight: '#ecdcb0',
   goldSoft: '#f1e6c8',
   cream: '#f7f1e3',
   creamDark: '#efe6d1',

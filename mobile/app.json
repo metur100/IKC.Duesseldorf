@@ -39,7 +39,8 @@
       "expo-font",
       "expo-image",
       "expo-status-bar",
-      "./plugins/withUploadSigning"
+      "./plugins/withUploadSigning",
+      "./plugins/withSmallerApk"
     ],
     "extra": {
       "apiUrl": "https://ikcduesseldorf.runasp.net",

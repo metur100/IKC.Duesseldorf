@@ -31,7 +31,7 @@ export default function HomeScreen() {
   const annText = ann?.enabled ? tx(ann.text) : ''
 
   return (
-    <ScreenScroll refreshing={refreshing} onRefresh={onRefresh} statusColor={heroFirst ? colors.greenDark : colors.green}>
+    <ScreenScroll refreshing={refreshing} onRefresh={onRefresh} statusColor={heroFirst ? colors.greenDeep : colors.green}>
       {heroFirst ? <BlockView block={first} topInset={insets.top} /> : <ScreenHeader title={site.settings.siteName} intro={tx(site.settings.tagline)} />}
       {!!annText && (
         <Pressable disabled={!ann.href} onPress={() => openHref(ann.href)} accessibilityRole={ann.href ? 'link' : undefined} style={s.ann}>

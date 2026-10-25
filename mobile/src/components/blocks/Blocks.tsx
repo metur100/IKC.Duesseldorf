@@ -1,4 +1,5 @@
 import Feather from '@expo/vector-icons/Feather'
+import { Image } from 'expo-image'
 import { useState } from 'react'
 import { LayoutAnimation, Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native'
 import type {
@@ -25,7 +26,7 @@ import { mapsHref, openHref } from '@/lib/links'
 import { colors, fonts, MAX_WIDTH, radius, space } from '@/lib/theme'
 import { useVaktija } from '@/lib/vaktija'
 import { Img } from '../Img'
-import { MonthTable, NextPrayerCard, PrayerToday } from '../prayer'
+import { HeroPrayerCard, MonthTable, PrayerToday } from '../prayer'
 import { hasRich, RichText } from '../RichText'
 import { Body, Btn, CmsButtons, Container, Eyebrow, Heading, Section, SectionHead, ToneProvider, useOnDark } from '../ui'
 import { Lightbox } from './Lightbox'
@@ -53,18 +54,23 @@ function Grid<T>({ items, cols, gap = 12, render }: { items: T[]; cols: number; 
 
 // ── Hero ──────────────────────────────────────────────────────────────────────
 
+const HERO_BG = require('../../../assets/hero-bg.jpg')
+
 export function Hero({ b, topInset }: { b: HeroBlock; topInset: number }) {
   const { tx } = useLang()
   const { width } = useWindowDimensions()
   const hasImg = !!b.image
   return (
     <ToneProvider tone="dark">
-      <View style={{ backgroundColor: colors.greenDark }}>
-        {hasImg && (
+      <View style={{ backgroundColor: colors.greenDeep }}>
+        {hasImg ? (
           <View style={StyleSheet.absoluteFill}>
             <Img src={b.image} aspect={undefined} bg={colors.greenDark} style={{ height: '100%', aspectRatio: undefined }} />
             <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(7,47,36,0.74)' }]} />
           </View>
+        ) : (
+          // Bez slike: ista pozadina kao hero na web stranici (brand/hero-bg.html)
+          <Image source={HERO_BG} style={StyleSheet.absoluteFill} contentFit="cover" contentPosition="top right" />
         )}
         <Container style={{ paddingTop: topInset + space.xxl, paddingBottom: space.xxl }}>
           {!!tx(b.eyebrow) && <Eyebrow style={{ marginBottom: space.md }}>{tx(b.eyebrow)}</Eyebrow>}
@@ -75,7 +81,7 @@ export function Hero({ b, topInset }: { b: HeroBlock; topInset: number }) {
           <CmsButtons buttons={b.buttons} />
           {b.showPrayer && (
             <View style={{ marginTop: space.xxl }}>
-              <NextPrayerCard />
+              <HeroPrayerCard />
             </View>
           )}
         </Container>
