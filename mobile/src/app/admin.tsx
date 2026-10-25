@@ -41,7 +41,9 @@ export default function AdminScreen() {
 
   return (
     // paddingBottom: na Androidu (edge-to-edge) bi sistemska navigacija prekrila donju traku admina.
-    <View style={{ flex: 1, backgroundColor: colors.green, paddingBottom: insets.bottom }}>
+    // Web admin tada ne dodaje svoj safe-area razmak (html.in-app u src/admin/admin.css).
+    // Bijela pozadina ispod sistemske navigacije nastavlja bijelu donju traku admina.
+    <View style={{ flex: 1, backgroundColor: colors.white, paddingBottom: insets.bottom }}>
       <View style={[s.bar, { paddingTop: insets.top }]}>
         <Pressable
           accessibilityRole="button"

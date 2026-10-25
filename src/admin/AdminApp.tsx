@@ -10,6 +10,9 @@ import { ApplicationsPage, ImagesPage, UsersPage } from './OtherPages'
 import Preview from './Preview'
 import './admin.css'
 
+// Admin otvoren u aplikaciji (react-native-webview ubacuje window.ReactNativeWebView), vidi admin.css
+if ('ReactNativeWebView' in window) document.documentElement.classList.add('in-app')
+
 const LOGO = `${import.meta.env.BASE_URL}brand/logo.svg`
 
 export default function AdminApp() {

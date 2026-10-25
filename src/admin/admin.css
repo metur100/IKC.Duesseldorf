@@ -19,11 +19,15 @@
   --a-side: 248px;
   --a-bar: 60px;
   --a-tab: 64px;
+  --a-safe-bottom: env(safe-area-inset-bottom);
   font-family: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   font-size: 15px;
   line-height: 1.5;
   color: var(--a-ink);
 }
+/* U aplikaciji WebView već završava iznad sistemske navigacije (mobile/src/app/admin.tsx),
+   ali Android WebView ipak prijavi safe-area inset – bez ovoga bi se razmak dodao dvaput. */
+html.in-app .adm { --a-safe-bottom: 0px; }
 .adm *, .adm *::before, .adm *::after { box-sizing: border-box; }
 .adm h1, .adm h2, .adm h3 { font-family: inherit; color: var(--a-ink); letter-spacing: -0.01em; line-height: 1.25; }
 .adm h1 { font-size: clamp(1.4rem, 3vw, 1.75rem); font-weight: 700; }
@@ -46,11 +50,11 @@ body.a-modal-open { overflow: hidden; }
 .a-brand { display: flex; align-items: center; gap: 0.6rem; min-width: 0; }
 .a-brand span { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
 .a-brand small { color: var(--a-muted); font-size: 0.78rem; }
-.a-main { padding: 1rem 1rem calc(var(--a-tab) + 1.5rem + env(safe-area-inset-bottom)); min-width: 0; }
+.a-main { padding: 1rem 1rem calc(var(--a-tab) + 1.5rem + var(--a-safe-bottom)); min-width: 0; }
 .a-tabbar {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
   display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
-  height: calc(var(--a-tab) + env(safe-area-inset-bottom)); padding-bottom: env(safe-area-inset-bottom);
+  height: calc(var(--a-tab) + var(--a-safe-bottom)); padding-bottom: var(--a-safe-bottom);
   background: #fff; border-top: 1px solid var(--a-line);
 }
 .a-tabbar a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; text-decoration: none; font-size: 0.7rem; color: var(--a-muted); min-width: 0; }
@@ -363,7 +367,7 @@ select.a-input { cursor: pointer; }
 }
 .a-modal-head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.75rem 0.75rem 0.75rem 1.25rem; border-bottom: 1px solid var(--a-line); }
 .a-modal-body { padding: 1.1rem 1.25rem 1.5rem; overflow-y: auto; overscroll-behavior: contain; min-width: 0; }
-.a-modal-foot { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.5rem; padding: 0.75rem 1.25rem calc(0.75rem + env(safe-area-inset-bottom)); border-top: 1px solid var(--a-line); }
+.a-modal-foot { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.5rem; padding: 0.75rem 1.25rem calc(0.75rem + var(--a-safe-bottom)); border-top: 1px solid var(--a-line); }
 @media (min-width: 720px) {
   .a-modal-backdrop { align-items: center; padding: 2rem; }
   .a-modal { max-width: 560px; border-radius: 18px; max-height: 88vh; }
@@ -392,7 +396,7 @@ select.a-input { cursor: pointer; }
 .a-danger-zone { margin-top: 0.5rem; padding-top: 1rem; border-top: 1px solid var(--a-line); }
 
 /* ── Obavijesti ─────────────────────────────────────────────────────────── */
-.a-toasts { position: fixed; z-index: 200; left: 50%; translate: -50% 0; bottom: calc(var(--a-tab, 64px) + 1rem + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 0.5rem; width: min(440px, calc(100% - 2rem)); font-family: 'Inter Variable', system-ui, sans-serif; font-size: 0.9rem; }
+.a-toasts { position: fixed; z-index: 200; left: 50%; translate: -50% 0; bottom: calc(var(--a-tab, 64px) + 1rem + var(--a-safe-bottom)); display: flex; flex-direction: column; gap: 0.5rem; width: min(440px, calc(100% - 2rem)); font-family: 'Inter Variable', system-ui, sans-serif; font-size: 0.9rem; }
 .a-toast { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; padding: 0.8rem 0.9rem 0.8rem 1rem; border-radius: 12px; background: #17201c; color: #fff; box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.4); animation: a-up 0.2s; overflow-wrap: anywhere; }
 .a-toast.error { background: var(--a-red); }
 .a-toast button { flex-shrink: 0; border: 0; background: none; color: inherit; opacity: 0.7; cursor: pointer; }
@@ -421,7 +425,7 @@ html.is-preview .hero { min-height: 640px; }
   .a-side {
     display: flex; flex-direction: column; gap: 1.5rem;
     position: fixed; top: 0; bottom: 0; left: 0; z-index: 60;
-    width: min(290px, 85vw); padding: 1.25rem 0.9rem calc(1.25rem + env(safe-area-inset-bottom));
+    width: min(290px, 85vw); padding: 1.25rem 0.9rem calc(1.25rem + var(--a-safe-bottom));
     background: #fff; box-shadow: 0 0 40px rgba(0, 0, 0, 0.25); overflow-y: auto;
     transform: translateX(-105%); transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
