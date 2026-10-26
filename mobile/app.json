@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "IKC Düsseldorf",
+    "name": "IKC Duesseldorf",
     "slug": "ikc-duesseldorf",
-    "owner": "certi-development",
+    "owner": "medinturkes",
     "scheme": "ikcd",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -40,7 +40,8 @@
       "expo-image",
       "expo-status-bar",
       "./plugins/withUploadSigning",
-      "./plugins/withSmallerApk"
+      "./plugins/withSmallerApk",
+      ["./plugins/withDisplayName", "IKC Düsseldorf"]
     ],
     "extra": {
       "apiUrl": "https://ikcduesseldorf.runasp.net",
