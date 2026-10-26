@@ -202,7 +202,9 @@ main.has-hero { margin-top: calc(-1 * var(--header-h)); }
 /* ── Hero ───────────────────────────────────────────────────────────────── */
 .hero {
   position: relative; isolation: isolate; overflow: hidden;
-  min-height: min(100svh, 920px);
+  /* Uvijek pun ekran; svh ne skače kad mobilni browser sakrije adresnu traku */
+  min-height: 100vh;
+  min-height: 100svh;
   display: flex; align-items: flex-end;
   color: var(--white); background: var(--green-950);
   padding: calc(var(--header-h) + 3rem) 0 clamp(2.5rem, 6vw, 5rem);
@@ -217,7 +219,7 @@ main.has-hero { margin-top: calc(-1 * var(--header-h)); }
 }
 /* Hero bez slike: tamno zelena sa diskretnim geometrijskim uzorkom */
 .hero-plain {
-  min-height: 0; align-items: center;
+  align-items: center;
   padding: calc(var(--header-h) + clamp(3rem, 9vw, 7rem)) 0 clamp(3rem, 8vw, 6rem);
   background:
     radial-gradient(ellipse 70% 60% at 85% 20%, rgba(201, 162, 74, 0.16), transparent 70%),
@@ -240,6 +242,10 @@ main.has-hero { margin-top: calc(-1 * var(--header-h)); }
 .hero-copy { animation: rise 0.9s var(--ease) both; min-width: 0; }
 .hero .prayer { animation: rise 0.9s 0.15s var(--ease) both; }
 @media (min-width: 960px) {
+  /* Do 1200px kartica vaktije dobija pola širine, da nazivi stanu u tri kolone */
+  .hero-inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 2.5rem; }
+}
+@media (min-width: 1200px) {
   .hero-inner { grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.9fr); gap: 4rem; }
 }
 @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
@@ -441,19 +447,32 @@ a.card:hover .card-more { transform: translateX(4px); }
 .map-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 1rem 1.2rem; }
 
 /* ── Vaktija ────────────────────────────────────────────────────────────── */
-.prayer { background: var(--white); border: 1px solid var(--line); border-radius: calc(var(--radius) + 4px); padding: clamp(1.25rem, 3vw, 2rem); box-shadow: var(--shadow-sm); min-width: 0; }
+.prayer { background: var(--white); border: 1px solid var(--line); border-radius: calc(var(--radius) + 4px); padding: clamp(1.25rem, 3vw, 2rem); box-shadow: var(--shadow-sm); min-width: 0; container-type: inline-size; }
 .prayer-empty { color: var(--muted); }
-.prayer-top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 0.5rem 1.5rem; }
+/* Bez prelamanja: odbrojavanje se mijenja svake sekunde i ne smije mijenjati visinu kartice */
+.prayer-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 0.5rem 1rem; }
+.prayer-top > :first-child { min-width: 0; }
 .prayer-label { display: block; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; color: var(--gold-600); }
 .prayer-next { display: block; font-family: var(--font-display); font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 520; color: var(--green-950); line-height: 1.15; margin-top: 0.2rem; }
 .prayer-next span { color: var(--gold-600); }
 .prayer-next em { font-style: normal; font-size: 0.55em; color: var(--muted); }
-.prayer-countdown { text-align: right; }
-.prayer-countdown .tabular { font-family: var(--font-display); font-size: clamp(1.4rem, 3.5vw, 1.9rem); color: var(--green-900); }
+.prayer-countdown { text-align: right; flex-shrink: 0; }
+/* Fiksna širina: Fraunces nema tabularne cifre ("00:00:00" je 4.38em, "11:11:11" 3.18em),
+   pa bi se naziv namaza lijevo prelamao/vraćao svake sekunde i kartica skakala */
+.prayer-countdown .tabular { display: inline-block; min-width: 4.4em; white-space: nowrap; font-family: var(--font-display); font-size: clamp(1.4rem, 3.5vw, 1.9rem); color: var(--green-900); }
 .prayer-date { margin-top: 0.5rem; font-size: 0.92rem; color: var(--muted); }
-.prayer-grid { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; margin-top: 1.25rem; }
+/* Kolone prema najdužem nazivu ("Morgendämmerung", "Sonnenaufgang"), višak prostora se dijeli;
+   kad tri kolone ne stanu u karticu, prelazi na dvije – nazivi uvijek u jednom redu */
+.prayer-grid { list-style: none; display: grid; grid-template-columns: repeat(3, auto); gap: 0.5rem; margin-top: 1.25rem; }
+@container (max-width: 23rem) { :lang(de) .prayer-grid { grid-template-columns: repeat(2, auto); } }
+@container (max-width: 19rem) { .prayer-grid { grid-template-columns: repeat(2, auto); } }
 .prayer-grid li { display: flex; flex-direction: column; gap: 0.15rem; padding: 0.75rem 0.8rem; border-radius: 12px; background: var(--paper); border: 1px solid transparent; min-width: 0; }
-.prayer-grid span { font-size: 0.8rem; color: var(--muted); line-height: 1.25; }
+.prayer-grid span { font-size: 0.8rem; color: var(--muted); line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@container (max-width: 17rem) {
+  .prayer-grid { gap: 0.4rem; }
+  .prayer-grid li { padding: 0.6rem 0.55rem; }
+  .prayer-grid span { font-size: 0.72rem; }
+}
 .prayer-grid strong { font-size: 1.2rem; font-weight: 600; color: var(--green-950); }
 .prayer-grid li.is-current { background: var(--green-900); }
 .prayer-grid li.is-current span { color: rgba(255, 255, 255, 0.7); }
